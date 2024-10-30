@@ -1,3 +1,9 @@
+import Canvas from './components/canvas';
+
 export default function Home() {
-  return <div>Search Algorithms</div>;
+  return (
+    <div>
+      <Canvas />
+    </div>
+  );
 }
