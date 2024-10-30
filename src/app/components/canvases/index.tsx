@@ -1,19 +1,39 @@
 'use client';
-import { useRef} from 'react';
+import { useRef } from 'react';
 import Sketch from 'react-p5';
 import P5, { Color } from 'p5/index';
+import SearchTemplate from '../search-template';
 
-const Canvas = () => {
+import DFS from '../search-algorithms/dfs';
+import BFS from '../search-algorithms/bfs';
+import UCS from '../search-algorithms/uniform-cost-search';
+import GreedyBestFirst from '../search-algorithms/greedy-search';
+import AStar from '../search-algorithms/a-star';
+
+interface CanvasProps {
+  algo: string;
+}
+
+const Canvas = ({ algo }: CanvasProps) => {
+  const dict: Record<string, new (p5: P5, windowWidth: number, windowHeight: number) => SearchTemplate> = {
+    dfs: DFS,
+    bfs: BFS,
+    ucs: UCS,
+    greedy: GreedyBestFirst,
+    astar: AStar,
+  };
+
+  const AlgorithmClass = dict[algo];
   const viewRef = useRef<HTMLDivElement>(null);
 
   let cols: number, rows: number;
   const size = 20;
 
-  // Flags to keep track of whether green and red have been placed
   let hasGreen = false;
   let hasRed = false;
+  let algorithm: SearchTemplate | null = null;
 
-  const c: (Color | null)[][] = []; // Initialize as a 2D array where cells can be null
+  const c: (Color | null)[][] = [];
 
   function setup(p5: P5, canvasParentRef: Element) {
     const width = 400;
@@ -28,6 +48,9 @@ const Canvas = () => {
     for (let i = 0; i < cols; i++) {
       c[i] = Array(rows).fill(null);
     }
+
+    // Instantiate the selected algorithm class
+    algorithm = AlgorithmClass ? new AlgorithmClass(p5, width, height) : null;
 
     p5.mouseClicked = () => handleMousePress(p5);
   }
@@ -51,10 +74,8 @@ const Canvas = () => {
 
     if (i >= 0 && i < cols && j >= 0 && j < rows) {
       if (c[i][j]) {
-        if (c[i][j]?.toString() === p5.color(0, 255, 0).toString())
-          hasGreen = false;
-        if (c[i][j]?.toString() === p5.color(255, 0, 0).toString())
-          hasRed = false;
+        if (c[i][j]?.toString() === p5.color(0, 255, 0).toString()) hasGreen = false;
+        if (c[i][j]?.toString() === p5.color(255, 0, 0).toString()) hasRed = false;
         c[i][j] = null;
       } else {
         let color: Color | null = null;
@@ -76,12 +97,30 @@ const Canvas = () => {
     p5.redraw();
   }
 
+  function animateAlgorithm() {
+    if (algorithm && !algorithm.finished) {
+      algorithm.check();
+      algorithm.draw();
+      requestAnimationFrame(animateAlgorithm);
+    }
+  }
+
+  function startAlgorithm() {
+    if (algorithm) {
+      algorithm.run(c);
+      requestAnimationFrame(animateAlgorithm);
+    }
+  }
+
   return (
     <div>
-      <div className='w-full flex flex-col justify-between bg-gray-50'>
-        <div ref={viewRef} className='flex-grow'>
+      <div className="w-full flex flex-col justify-between bg-gray-50">
+        <div ref={viewRef} className="flex-grow">
           <Sketch setup={setup as never} draw={draw as never} />
         </div>
+        <button onClick={startAlgorithm} className="mt-4 p-2 bg-blue-500 text-white w-[200px]">
+          Start Algorithm
+        </button>
       </div>
     </div>
   );
