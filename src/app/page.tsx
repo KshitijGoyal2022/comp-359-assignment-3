@@ -1,4 +1,7 @@
 "use client";
+import React from "react";
+import { AlgorithmSelectionModal } from "@/components/ui/algorithm-selection-modal";
+
 import Canvas from "./components/canvases";
 import { Vortex } from "../components/ui/vortex";
 export default function Home() {
@@ -23,14 +26,10 @@ export default function Home() {
 						famous path finding algorithms.
 					</p>
 					<div className="flex flex-col sm:flex-row items-center gap-4 mt-6">
-						<button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 transition duration-200 rounded-lg text-white shadow-[0px_2px_0px_0px_#FFFFFF40_inset]">
-							Start app
-						</button>
+						<AlgorithmSelectionModal />
 					</div>
 				</Vortex>
 			</div>
 		</div>
 	);
 }
-
-import React from "react";
