@@ -1,129 +1,123 @@
-'use client';
-import { useRef } from 'react';
-import Sketch from 'react-p5';
-import P5, { Color } from 'p5/index';
-import SearchTemplate from '../search-template';
+// SketchComponent.tsx
 
-import DFS from '../search-algorithms/dfs';
-import BFS from '../search-algorithms/bfs';
-import UCS from '../search-algorithms/uniform-cost-search';
-import GreedyBestFirst from '../search-algorithms/greedy-search';
-import AStar from '../search-algorithms/a-star';
+import React, { useState } from "react";
+import Sketch from "react-p5";
+import AStarSearch from "../search-algorithms/a-star";
+import * as p5Types from "p5";
+import SearchTemplate, { Settings } from "../search-template";
+import UniformCostSearch from "../search-algorithms/uniform-cost-search";
+import DFS from "../search-algorithms/dfs";
+import BFS from "../search-algorithms/bfs";
+import GreedySearch from "../search-algorithms/greedy-search";
 
-interface CanvasProps {
-  algo: string;
+export enum PathFindingAlgorithms {
+	AStar = "A*",
+	UniformCost = "UniformCost",
+	DFS = "DFS",
+	BFS = "BFS",
+	GreedySearch = "GreedySearch",
 }
 
-const Canvas = ({ algo }: CanvasProps) => {
-  const dict: Record<string, new (p5: P5, windowWidth: number, windowHeight: number) => SearchTemplate> = {
-    dfs: DFS,
-    bfs: BFS,
-    ucs: UCS,
-    greedy: GreedyBestFirst,
-    astar: AStar,
-  };
+type Props = {
+	algorithm: PathFindingAlgorithms;
+	settings?: Settings;
+};
 
-  const AlgorithmClass = dict[algo];
-  const viewRef = useRef<HTMLDivElement>(null);
+const defaultSettings: Settings = {
+	cols: 50,
+	rows: 50,
+	wallProbability: 0.3,
+	dynamicObstacles: true,
+	numDynamicObstacles: 20,
+};
 
-  let cols: number, rows: number;
-  const size = 20;
+const Canvas: React.FC<Props> = (props) => {
+	const { algorithm, settings = defaultSettings } = props;
 
-  let hasGreen = false;
-  let hasRed = false;
-  let algorithm: SearchTemplate | null = null;
+	const [searchInstance, setSearchInstance] = useState<SearchTemplate | null>(
+		null
+	);
 
-  const c: (Color | null)[][] = [];
+	const setup = (p5: p5Types, canvasParentRef: Element) => {
+		const width = settings.cols * 10;
+		const height = settings.rows * 10;
+		// TODO read the settings from the user and size
+		p5.createCanvas(width, height).parent(canvasParentRef);
 
-  function setup(p5: P5, canvasParentRef: Element) {
-    const width = 400;
-    const height = 400;
+		let searchAlgo: SearchTemplate;
 
-    p5.createCanvas(width, height).parent(canvasParentRef);
-    p5.background(255);
+		if (algorithm === PathFindingAlgorithms.AStar) {
+			searchAlgo = new AStarSearch(p5, settings, [width, height]);
+		} else if (algorithm === PathFindingAlgorithms.UniformCost) {
+			searchAlgo = new UniformCostSearch(p5, settings, [width, height]);
+		} else if (algorithm === PathFindingAlgorithms.DFS) {
+			searchAlgo = new DFS(p5, settings, [width, height]);
+		} else if (algorithm === PathFindingAlgorithms.BFS) {
+			searchAlgo = new BFS(p5, settings, [width, height]);
+		} else {
+			searchAlgo = new GreedySearch(p5, settings, [width, height]);
+		}
 
-    cols = Math.floor(width / size);
-    rows = Math.floor(height / size);
+		setSearchInstance(searchAlgo);
 
-    for (let i = 0; i < cols; i++) {
-      c[i] = Array(rows).fill(null);
-    }
+		p5.mousePressed = () => {
+			if (searchInstance) {
+				searchInstance.handleMousePressed(p5.mouseX, p5.mouseY);
+			}
+		};
 
-    // Instantiate the selected algorithm class
-    algorithm = AlgorithmClass ? new AlgorithmClass(p5, width, height) : null;
+		p5.keyPressed = () => {
+			if (p5.key === " ") {
+				if (searchInstance) {
+					searchInstance.reset();
+				}
+			}
+		};
+	};
 
-    p5.mouseClicked = () => handleMousePress(p5);
-  }
+	const draw = (p5: p5Types) => {
+		if (searchInstance) {
+			searchInstance.run();
+		}
+		document.getElementById(
+			"views"
+		)!.innerHTML = `Total nodes visited: ${searchInstance?.getTotalNodesVisited()}`;
 
-  function draw(p5: P5) {
-    for (let i = 0; i < cols; i++) {
-      for (let j = 0; j < rows; j++) {
-        if (c[i][j]) {
-          p5.fill(c[i][j]!);
-        } else {
-          p5.fill(255);
-        }
-        p5.rect(i * size, j * size, size, size);
-      }
-    }
-  }
+		document.getElementById(
+			"percentage"
+		)!.innerHTML = `Percentage nodes visited: ${searchInstance
+			?.getTotalNotesVisitedPercentage()
+			.toFixed(2)}%`;
 
-  function handleMousePress(p5: P5) {
-    const i = Math.floor(p5.mouseX / size);
-    const j = Math.floor(p5.mouseY / size);
+		document.getElementById(
+			"total_cost"
+		)!.innerHTML = `Total Path cost: ${searchInstance?.getTotalPathCost()}`;
 
-    if (i >= 0 && i < cols && j >= 0 && j < rows) {
-      if (c[i][j]) {
-        if (c[i][j]?.toString() === p5.color(0, 255, 0).toString()) hasGreen = false;
-        if (c[i][j]?.toString() === p5.color(255, 0, 0).toString()) hasRed = false;
-        c[i][j] = null;
-      } else {
-        let color: Color | null = null;
+		const terrainCosts = searchInstance?.getTerrainCosts();
+		for (const terrain in terrainCosts) {
+			const cost = terrainCosts[terrain];
+			const breakdown = document.getElementById("breakdown");
+			breakdown.innerHTML = "";
+			// add p into breakdown
+			for (const terrain in terrainCosts) {
+				const cost = terrainCosts[terrain];
+				breakdown!.innerHTML += `${
+					terrain.charAt(0).toUpperCase() + terrain.slice(1)
+				}: ${cost.toFixed(2)}<br>`;
+			}
+		}
+	};
 
-        if (!hasGreen) {
-          color = p5.color(0, 255, 0);
-          hasGreen = true;
-        } else if (!hasRed) {
-          color = p5.color(255, 0, 0);
-          hasRed = true;
-        } else {
-          color = p5.color(0, 0, 0);
-        }
-
-        c[i][j] = color;
-      }
-    }
-
-    p5.redraw();
-  }
-
-  function animateAlgorithm() {
-    if (algorithm && !algorithm.finished) {
-      algorithm.check();
-      algorithm.draw();
-      requestAnimationFrame(animateAlgorithm);
-    }
-  }
-
-  function startAlgorithm() {
-    if (algorithm) {
-      algorithm.run(c);
-      requestAnimationFrame(animateAlgorithm);
-    }
-  }
-
-  return (
-    <div>
-      <div className="w-full flex flex-col justify-between bg-gray-50">
-        <div ref={viewRef} className="flex-grow">
-          <Sketch setup={setup as never} draw={draw as never} />
-        </div>
-        <button onClick={startAlgorithm} className="mt-4 p-2 bg-blue-500 text-white w-[200px]">
-          Start Algorithm
-        </button>
-      </div>
-    </div>
-  );
+	return (
+		<div>
+			<Sketch setup={setup} draw={draw} />
+			<p id="views">Total views: </p>
+			<p id="percentage">Percentage nodes visited</p>
+			<p id="total_cost">Total Path cost: </p>
+			<p>Terrain cost breakdown:</p>
+			<p id="breakdown"></p>
+		</div>
+	);
 };
 
 export default Canvas;
