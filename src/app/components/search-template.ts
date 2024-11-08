@@ -41,6 +41,10 @@ export default abstract class SearchTemplate implements SearchInterface {
 	protected terrainTypes: TerrainTypes;
 	protected current: Spot | null;
 
+	protected nodesVisited: number;
+	protected totalPathCost: number;
+	protected terrainCosts: { [key: string]: number };
+
 	constructor(p5: p5Types, settings: Settings) {
 		this.p5 = p5;
 		this.settings = settings;
@@ -56,6 +60,15 @@ export default abstract class SearchTemplate implements SearchInterface {
 		this.terrainTypes = settings.terrainTypes || this.defaultTerrainTypes();
 		this.current = null;
 		this.initialize();
+
+		this.nodesVisited = 0;
+		this.totalPathCost = 0;
+		this.terrainCosts = {
+			plain: 0,
+			forest: 0,
+			water: 0,
+			mountain: 0,
+		};
 	}
 
 	protected defaultTerrainTypes(): TerrainTypes {
@@ -147,6 +160,7 @@ export default abstract class SearchTemplate implements SearchInterface {
 	public reset(): void {
 		this.resetGrid();
 		this.initialize();
+		this.resetMetrics();
 		this.p5.loop();
 	}
 
@@ -156,6 +170,17 @@ export default abstract class SearchTemplate implements SearchInterface {
 				this.grid[i][j].reset();
 			}
 		}
+	}
+
+	protected resetMetrics(): void {
+		this.nodesVisited = 0;
+		this.totalPathCost = 0;
+		this.terrainCosts = {
+			plain: 0,
+			forest: 0,
+			water: 0,
+			mountain: 0,
+		};
 	}
 
 	// move dynamic obstacles
@@ -215,4 +240,34 @@ export default abstract class SearchTemplate implements SearchInterface {
 	}
 
 	protected abstract drawSets(): void;
+
+	protected calculatePathCosts(): void {
+		this.totalPathCost = 0;
+		this.terrainCosts = {
+			plain: 0,
+			forest: 0,
+			water: 0,
+			mountain: 0,
+		};
+
+		if (this.current) {
+			let temp = this.current;
+			while (temp.previous) {
+				const terrainType = this.getTerrainType(temp);
+				const cost = temp.terrain.cost;
+				this.totalPathCost += cost;
+				this.terrainCosts[terrainType] += cost;
+				temp = temp.previous;
+			}
+		}
+	}
+
+	private getTerrainType(spot: Spot): string {
+		for (const key in this.terrainTypes) {
+			if (this.terrainTypes[key] === spot.terrain) {
+				return key;
+			}
+		}
+		return "unknown";
+	}
 }
