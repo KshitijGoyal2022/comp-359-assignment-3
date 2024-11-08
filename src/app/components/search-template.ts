@@ -237,6 +237,8 @@ export default abstract class SearchTemplate implements SearchInterface {
 			}
 			this.p5.endShape();
 		}
+
+		this.displayMetrics();
 	}
 
 	protected abstract drawSets(): void;
@@ -269,5 +271,40 @@ export default abstract class SearchTemplate implements SearchInterface {
 			}
 		}
 		return "unknown";
+	}
+
+	protected displayMetrics(): void {
+		this.p5.fill(255);
+		this.p5.noStroke();
+		this.p5.textSize(14);
+		this.p5.textAlign(this.p5.LEFT, this.p5.TOP);
+
+		let yPosition = 5;
+		const lineHeight = 18;
+
+		this.p5.text(`Nodes Visited: ${this.nodesVisited}`, 10, yPosition);
+		yPosition += lineHeight;
+
+		this.p5.text(
+			`Total Path Cost: ${this.totalPathCost.toFixed(2)}`,
+			10,
+			yPosition
+		);
+		yPosition += lineHeight;
+
+		this.p5.text(`Terrain Cost Breakdown:`, 10, yPosition);
+		yPosition += lineHeight;
+
+		for (const terrain in this.terrainCosts) {
+			const cost = this.terrainCosts[terrain];
+			this.p5.text(
+				`  ${
+					terrain.charAt(0).toUpperCase() + terrain.slice(1)
+				}: ${cost.toFixed(2)}`,
+				10,
+				yPosition
+			);
+			yPosition += lineHeight;
+		}
 	}
 }
