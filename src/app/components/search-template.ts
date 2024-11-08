@@ -279,53 +279,53 @@ export default abstract class SearchTemplate implements SearchInterface {
 		return "unknown";
 	}
 
-	protected displayMetrics(): void {
-		const metricsStartY = 0;
-		this.p5.fill(255);
-		this.p5.noStroke();
-		this.p5.textSize(14);
-		this.p5.textAlign(this.p5.LEFT, this.p5.TOP);
+	// protected displayMetrics(): void {
+	// 	const metricsStartY = 0;
+	// 	this.p5.fill(255);
+	// 	this.p5.noStroke();
+	// 	this.p5.textSize(14);
+	// 	this.p5.textAlign(this.p5.LEFT, this.p5.TOP);
 
-		let yPosition = metricsStartY;
-		const lineHeight = 18;
+	// 	let yPosition = metricsStartY;
+	// 	const lineHeight = 18;
 
-		const totalBlocks = this.cols * this.rows;
-		const percentageVisited = ((this.nodesVisited / totalBlocks) * 100).toFixed(
-			2
-		);
+	// 	const totalBlocks = this.cols * this.rows;
+	// 	const percentageVisited = ((this.nodesVisited / totalBlocks) * 100).toFixed(
+	// 		2
+	// 	);
 
-		this.p5.text(`Nodes Visited: ${this.nodesVisited}`, 10, yPosition);
-		yPosition += lineHeight;
+	// 	this.p5.text(`Nodes Visited: ${this.nodesVisited}`, 10, yPosition);
+	// 	yPosition += lineHeight;
 
-		this.p5.text(
-			`Percentage of Blocks Visited: ${percentageVisited}%`,
-			10,
-			yPosition
-		);
-		yPosition += lineHeight;
+	// 	this.p5.text(
+	// 		`Percentage of Blocks Visited: ${percentageVisited}%`,
+	// 		10,
+	// 		yPosition
+	// 	);
+	// 	yPosition += lineHeight;
 
-		this.p5.text(
-			`Total Path Cost: ${this.totalPathCost.toFixed(2)}`,
-			10,
-			yPosition
-		);
-		yPosition += lineHeight;
+	// 	this.p5.text(
+	// 		`Total Path Cost: ${this.totalPathCost.toFixed(2)}`,
+	// 		10,
+	// 		yPosition
+	// 	);
+	// 	yPosition += lineHeight;
 
-		this.p5.text(`Terrain Cost Breakdown:`, 10, yPosition);
-		yPosition += lineHeight;
+	// 	this.p5.text(`Terrain Cost Breakdown:`, 10, yPosition);
+	// 	yPosition += lineHeight;
 
-		for (const terrain in this.terrainCosts) {
-			const cost = this.terrainCosts[terrain];
-			this.p5.text(
-				`  ${
-					terrain.charAt(0).toUpperCase() + terrain.slice(1)
-				}: ${cost.toFixed(2)}`,
-				10,
-				yPosition
-			);
-			yPosition += lineHeight;
-		}
-	}
+	// 	for (const terrain in this.terrainCosts) {
+	// 		const cost = this.terrainCosts[terrain];
+	// 		this.p5.text(
+	// 			`  ${
+	// 				terrain.charAt(0).toUpperCase() + terrain.slice(1)
+	// 			}: ${cost.toFixed(2)}`,
+	// 			10,
+	// 			yPosition
+	// 		);
+	// 		yPosition += lineHeight;
+	// 	}
+	// }
 
 	public getTotalNodesVisited(): number {
 		return this.nodesVisited;
