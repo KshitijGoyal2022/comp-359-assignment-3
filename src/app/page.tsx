@@ -2,17 +2,13 @@
 import React from "react";
 import { AlgorithmSelectionModal } from "@/components/ui/algorithm-selection-modal";
 
-import Canvas from "./components/canvases";
 import { Vortex } from "../components/ui/vortex";
 export default function Home() {
 	return (
 		<div className="">
-			{/* <Canvas algo='dfs'/>
-        <Canvas algo='bfs'/>
-        <Canvas algo='astar'/>
-        <Canvas algo='ucs'/> */}
 			<div className="w-screen h-screen mx-auto rounded-md overflow-hidden">
 				<Vortex
+					// <div
 					backgroundColor="black"
 					className="flex items-center flex-col justify-center px-2 md:px-10 py-4 w-full h-full"
 				>
@@ -28,6 +24,7 @@ export default function Home() {
 					<div className="flex flex-col sm:flex-row items-center gap-4 mt-6">
 						<AlgorithmSelectionModal />
 					</div>
+					{/* </div> */}
 				</Vortex>
 			</div>
 		</div>
