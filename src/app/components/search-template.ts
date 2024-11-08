@@ -45,7 +45,9 @@ export default abstract class SearchTemplate implements SearchInterface {
 	protected totalPathCost: number;
 	protected terrainCosts: { [key: string]: number };
 
-	constructor(p5: p5Types, settings: Settings) {
+	protected gridAreaWidth: number;
+	protected gridAreaHeight: number;
+	constructor(p5: p5Types, settings: Settings, gridAreaSize: [number, number]) {
 		this.p5 = p5;
 		this.settings = settings;
 		this.cols = settings.cols || 50;
@@ -54,12 +56,14 @@ export default abstract class SearchTemplate implements SearchInterface {
 		this.start = null;
 		this.end = null;
 		this.path = [];
-		this.w = this.p5.width / this.cols;
-		this.h = this.p5.height / this.rows;
+		this.w = gridAreaSize[0] / this.cols;
+		this.h = gridAreaSize[1] / this.rows;
 		this.dynamicObstacles = [];
 		this.terrainTypes = settings.terrainTypes || this.defaultTerrainTypes();
 		this.current = null;
 		this.initialize();
+		this.gridAreaWidth = p5.width; // 600 pixels
+		this.gridAreaHeight = p5.height; // 600 pixels
 
 		this.nodesVisited = 0;
 		this.totalPathCost = 0;
@@ -202,6 +206,8 @@ export default abstract class SearchTemplate implements SearchInterface {
 	protected display(): void {
 		this.p5.background(0);
 
+		this.p5.push();
+		this.p5.translate(0, 0);
 		// Draw grid
 		for (let i = 0; i < this.cols; i++) {
 			for (let j = 0; j < this.rows; j++) {
@@ -274,15 +280,28 @@ export default abstract class SearchTemplate implements SearchInterface {
 	}
 
 	protected displayMetrics(): void {
+		const metricsStartY = 0;
 		this.p5.fill(255);
 		this.p5.noStroke();
 		this.p5.textSize(14);
 		this.p5.textAlign(this.p5.LEFT, this.p5.TOP);
 
-		let yPosition = 5;
+		let yPosition = metricsStartY;
 		const lineHeight = 18;
 
+		const totalBlocks = this.cols * this.rows;
+		const percentageVisited = ((this.nodesVisited / totalBlocks) * 100).toFixed(
+			2
+		);
+
 		this.p5.text(`Nodes Visited: ${this.nodesVisited}`, 10, yPosition);
+		yPosition += lineHeight;
+
+		this.p5.text(
+			`Percentage of Blocks Visited: ${percentageVisited}%`,
+			10,
+			yPosition
+		);
 		yPosition += lineHeight;
 
 		this.p5.text(
@@ -306,5 +325,20 @@ export default abstract class SearchTemplate implements SearchInterface {
 			);
 			yPosition += lineHeight;
 		}
+	}
+
+	public getTotalNodesVisited(): number {
+		return this.nodesVisited;
+	}
+	public getTotalNotesVisitedPercentage(): number {
+		const totalBlocks = this.cols * this.rows;
+		return (this.nodesVisited / totalBlocks) * 100;
+	}
+	public getTotalPathCost(): number {
+		return this.totalPathCost;
+	}
+
+	public getTerrainCosts(): { [key: string]: number } {
+		return this.terrainCosts;
 	}
 }
