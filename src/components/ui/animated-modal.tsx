@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
@@ -103,7 +105,7 @@ export const ModalBody = ({
 					<motion.div
 						ref={modalRef}
 						className={cn(
-							"min-h-[50%] max-h-[90%] md:max-w-[40%] bg-neutral-950 border border-transparent border-neutral-800 md:rounded-2xl relative z-50 flex flex-col flex-1 overflow-hidden",
+							"min-h-[50%] max-h-[90%] md:max-w-[60%] bg-neutral-950 border border-transparent border-neutral-800 md:rounded-2xl relative z-50 flex flex-col flex-1 overflow-hidden",
 							className
 						)}
 						initial={{
