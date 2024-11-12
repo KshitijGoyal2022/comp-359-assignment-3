@@ -244,7 +244,7 @@ export default abstract class SearchTemplate implements SearchInterface {
 			this.p5.endShape();
 		}
 
-		this.displayMetrics();
+		// this.displayMetrics();
 	}
 
 	protected abstract drawSets(): void;
