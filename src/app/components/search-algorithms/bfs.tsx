@@ -1,127 +1,65 @@
-import { Color } from 'p5/index';
-import SearchTemplate from '../search-template';
-
-interface Cell {
-  row: number;
-  col: number;
-  parent: Cell | null; // Reference to the parent cell for backtracking
-}
-
+import SearchTemplate, { Settings } from "../search-template";
+import Spot from "../spot";
+import * as p5Types from "p5";
 
 export default class BFS extends SearchTemplate {
-  private queue: Cell[] = [];
-  private targetReached: boolean = false;
-  private noPath: boolean = false;
-  private start: Cell | null = null;
-  private end: Cell | null = null;
-  private currentPath: Cell[] = [];
+	private queue!: Spot[];
+	private visited!: Set<Spot>;
 
-  initializeStartEnd(): void {
-    for (let i = 0; i < this.c.length; i++) {
-      for (let j = 0; j < this.c[0].length; j++) {
-        if (this.c[i][j]?.toString() === this.p5.color(0, 255, 0).toString()) {
-          this.start = { row: i, col: j, parent: null };
-        }
-        if (this.c[i][j]?.toString() === this.p5.color(255, 0, 0).toString()) {
-          this.end = { row: i, col: j, parent: null };
-        }
-      }
-    }
-  
-    if (this.start) {
-      this.queue.push(this.start);
-      this.markVisited(this.start.row, this.start.col);
-      this.currentPath.push(this.start);
-    }
-  }
-  
+	constructor(p5: p5Types, settings: Settings, gridAreaSize: [number, number]) {
+		super(p5, settings, gridAreaSize);
+	}
 
-  run(c: (Color | null)[][]): void {
-    super.run(c);
-    this.initializeStartEnd();
-  }
+	protected additionalSetup(): void {
+		this.queue = [];
+		this.visited = new Set();
+		if (this.start) {
+			this.queue.push(this.start);
+			this.visited.add(this.start);
+		}
+		this.current = null;
+	}
 
-  getNeighbors(cell: Cell): Cell[] {
-    const { row, col } = cell;
-    const neighbors: Cell[] = [];
-  
-    const addNeighbor = (newRow: number, newCol: number) => {
-      if (
-        newRow >= 0 && newRow < this.c.length &&
-        newCol >= 0 && newCol < this.c[0].length &&
-        !this.visited[newRow][newCol] &&
-        this.c[newRow][newCol]?.toString() !== this.p5.color(0, 0, 0).toString()
-      ) {
-        const neighbor = { row: newRow, col: newCol, parent: cell };
-        neighbors.push(neighbor);
-      }
-    };
-  
-    addNeighbor(row - 1, col); // Up
-    addNeighbor(row + 1, col); // Down
-    addNeighbor(row, col - 1); // Left
-    addNeighbor(row, col + 1); // Right
-  
-    return neighbors;
-  }
-  
+	public run(): void {
+		if (this.queue.length > 0) {
+			this.current = this.queue.shift()!;
+			this.nodesVisited++;
 
-  check(): void {
-    if (this.queue.length > 0 && !this.targetReached) {
-      const current = this.queue.shift();
-      if (current) {
-        this.processCell(current);
-      }
-    } else if (!this.targetReached) {
-      this.noPath = true;
-      this.finished = true;
-    } else {
-      this.finished = true;
-    }
-  }
+			if (this.current === this.end) {
+				this.calculatePathCosts();
+				this.p5.noLoop();
+				console.log("BFS: Path found!");
+			}
 
-  processCell(cell: Cell): void {
-    const { row, col } = cell;
-  
-    if (this.end && row === this.end.row && col === this.end.col) {
-      this.targetReached = true;
-  
-      // Backtrack to create the final optimal path
-      let current: Cell | null = cell;
-      while (current) {
-        this.finalPath.push({ row: current.row, col: current.col });
-        current = current.parent; // Move to the parent cell
-      }
-      this.finalPath.reverse(); // Reverse to get path from start to end
-      return;
-    }
-  
-    this.markVisited(row, col);
-    this.currentPath.push(cell);
-  
-    const neighbors = this.getNeighbors(cell);
-    for (const neighbor of neighbors) {
-      this.queue.push(neighbor);
-      this.markVisited(neighbor.row, neighbor.col);
-    }
-  }
-  
+			const neighbors = this.current.neighbors;
 
-  draw(): void {
-    for (const { row, col } of this.currentPath) {
-      if (!this.targetReached) {
-        this.c[row][col] = this.p5.color(128, 128, 128); // Gray for active search path
-      }
-    }
-  
-    if (this.targetReached) {
-      for (const { row, col } of this.finalPath) {
-        this.c[row][col] = this.p5.color(0, 0, 255); // Blue for final optimal path
-      }
-      this.currentPath = []; // Clear current path to avoid gray overlay on final path
-    } else if (this.noPath) {
-      console.log("No path found.");
-    }
-  }
-  
+			for (const neighbor of neighbors) {
+				if (!this.visited.has(neighbor) && !neighbor.wall) {
+					this.visited.add(neighbor);
+					neighbor.previous = this.current;
+					this.queue.push(neighbor);
+				}
+			}
+		} else {
+			console.log("BFS: No solution");
+			this.p5.noLoop();
+			return;
+		}
+
+		if (this.settings.dynamicObstacles) {
+			this.moveDynamicObstacles();
+		}
+
+		this.display();
+	}
+
+	protected drawSets(): void {
+		this.visited.forEach((spot) => {
+			spot.show(this.p5.color(255, 0, 0, 50));
+		});
+
+		this.queue.forEach((spot) => {
+			spot.show(this.p5.color(0, 255, 0, 50));
+		});
+	}
 }
