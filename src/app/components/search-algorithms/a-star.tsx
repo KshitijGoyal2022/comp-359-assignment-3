@@ -26,6 +26,7 @@ export default class AStarSearch extends SearchTemplate {
 	}
 
 	public run(): void {
+		if (this.finished) return;
 		if (this.openSet.length > 0) {
 			let winner = 0;
 			for (let i = 0; i < this.openSet.length; i++) {
@@ -40,6 +41,7 @@ export default class AStarSearch extends SearchTemplate {
 			if (this.current === this.end) {
 				this.calculatePathCosts();
 				this.p5.noLoop();
+				this.finished = true;
 				console.log("A* Search: Path found!");
 			}
 

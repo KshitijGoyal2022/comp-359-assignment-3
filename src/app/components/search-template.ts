@@ -40,6 +40,7 @@ export default abstract class SearchTemplate implements SearchInterface {
 	protected dynamicObstacles: Spot[];
 	protected terrainTypes: TerrainTypes;
 	protected current: Spot | null;
+	protected finished: boolean;
 
 	protected nodesVisited: number;
 	protected totalPathCost: number;
@@ -47,6 +48,7 @@ export default abstract class SearchTemplate implements SearchInterface {
 
 	protected gridAreaWidth: number;
 	protected gridAreaHeight: number;
+
 	constructor(p5: p5Types, settings: Settings, gridAreaSize: [number, number]) {
 		this.p5 = p5;
 		this.settings = settings;
@@ -73,6 +75,7 @@ export default abstract class SearchTemplate implements SearchInterface {
 			water: 0,
 			mountain: 0,
 		};
+		this.finished = false;
 	}
 
 	protected defaultTerrainTypes(): TerrainTypes {
@@ -340,5 +343,8 @@ export default abstract class SearchTemplate implements SearchInterface {
 
 	public getTerrainCosts(): { [key: string]: number } {
 		return this.terrainCosts;
+	}
+	public hasFinished() {
+		return this.finished;
 	}
 }

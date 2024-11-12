@@ -24,6 +24,7 @@ export default class GreedySearch extends SearchTemplate {
 	}
 
 	public run(): void {
+		if (this.finished) return;
 		if (this.openSet.length > 0) {
 			this.openSet.sort((a, b) => {
 				const aHeuristic = this.heuristic(a, this.end!);
@@ -37,6 +38,7 @@ export default class GreedySearch extends SearchTemplate {
 			if (this.current === this.end) {
 				this.calculatePathCosts();
 				this.p5.noLoop();
+				this.finished = true;
 				console.log("Greedy Best-First Search: Path found!");
 			}
 

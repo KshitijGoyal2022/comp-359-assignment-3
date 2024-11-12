@@ -18,10 +18,11 @@ const DynamicGrid: React.FC<DynamicGridProps> = ({
 	settings: Settings;
 }) => {
 	const columns = Math.ceil(Math.sqrt(algorithms?.length | 0));
+	console.log((((algorithms?.length | 0) % 2) + 1) * 100);
 
 	return (
 		<div
-			className="grid gap-4 h-screen"
+			className="grid gap-4 bg-black h-screen"
 			style={{
 				gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
 			}}

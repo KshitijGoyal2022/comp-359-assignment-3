@@ -21,6 +21,7 @@ export default class BFS extends SearchTemplate {
 	}
 
 	public run(): void {
+		if (this.finished) return;
 		if (this.queue.length > 0) {
 			this.current = this.queue.shift()!;
 			this.nodesVisited++;
@@ -28,6 +29,7 @@ export default class BFS extends SearchTemplate {
 			if (this.current === this.end) {
 				this.calculatePathCosts();
 				this.p5.noLoop();
+				this.finished = true;
 				console.log("BFS: Path found!");
 			}
 

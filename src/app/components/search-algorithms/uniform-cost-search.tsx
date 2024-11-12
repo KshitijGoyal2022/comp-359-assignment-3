@@ -21,6 +21,7 @@ export default class UniformCostSearch extends SearchTemplate {
 	}
 
 	public run(): void {
+		if (this.finished) return;
 		if (this.frontier.length > 0) {
 			this.frontier.sort((a, b) => a.cost - b.cost);
 			this.current = this.frontier.shift()!;
@@ -29,6 +30,7 @@ export default class UniformCostSearch extends SearchTemplate {
 			if (this.current === this.end) {
 				this.calculatePathCosts();
 				this.p5.noLoop();
+				this.finished = true;
 				console.log("Uniform Cost Search: Path found!");
 			}
 

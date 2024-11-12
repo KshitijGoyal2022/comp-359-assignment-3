@@ -21,6 +21,7 @@ export default class DFS extends SearchTemplate {
 	}
 
 	public run(): void {
+		if (this.finished) return;
 		if (this.stack.length > 0) {
 			this.current = this.stack.pop()!;
 			this.nodesVisited++;
@@ -28,6 +29,7 @@ export default class DFS extends SearchTemplate {
 			if (this.current === this.end) {
 				this.calculatePathCosts();
 				this.p5.noLoop();
+				this.finished = true;
 				console.log("DFS: Path found!");
 			}
 
