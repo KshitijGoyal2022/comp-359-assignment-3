@@ -103,7 +103,7 @@ const Canvas: React.FC<Props> = (props) => {
 
 		const terrainCosts = searchInstance?.getTerrainCosts();
 		const breakdown = document.getElementById("breakdown" + algorithm);
-		breakdown.innerHTML = "";
+		breakdown!.innerHTML = "";
 		// add p into breakdown
 		for (const terrain in terrainCosts) {
 			const cost = terrainCosts[terrain];

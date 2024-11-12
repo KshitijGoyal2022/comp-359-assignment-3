@@ -232,47 +232,50 @@ const SettingsPage = ({
 									Set color and cost for each terrain type.
 								</p>
 							</div>
-							{Object.entries(settings.terrainTypes).map(
-								([terrain, { color, cost }]) => (
-									<div key={terrain} className="space-y-4">
-										<h5 className="text-gray-200 font-semibold capitalize">
-											{terrain}
-										</h5>
-										<div className="grid grid-cols-3 items-center gap-4">
-											<Label className="text-gray-200 col-span-2">Cost</Label>
-											<Input
-												type="number"
-												value={cost}
-												onChange={(e) =>
-													handleTerrainChange(
-														terrain as keyof TerrainTypes,
-														"cost",
-														parseInt(e.target.value)
-													)
-												}
-												className="h-8 bg-gray-800 text-gray-100 border-gray-700"
-											/>
+							{settings.terrainTypes &&
+								Object.entries(settings.terrainTypes).map(
+									([terrain, { color, cost }]) => (
+										<div key={terrain} className="space-y-4">
+											<h5 className="text-gray-200 font-semibold capitalize">
+												{terrain}
+											</h5>
+											<div className="grid grid-cols-3 items-center gap-4">
+												<Label className="text-gray-200 col-span-2">Cost</Label>
+												<Input
+													type="number"
+													value={cost}
+													onChange={(e) =>
+														handleTerrainChange(
+															terrain as keyof TerrainTypes,
+															"cost",
+															parseInt(e.target.value)
+														)
+													}
+													className="h-8 bg-gray-800 text-gray-100 border-gray-700"
+												/>
+											</div>
+											<div className="grid grid-cols-3 items-center gap-4">
+												<Label className="text-gray-200 col-span-2">
+													Color
+												</Label>
+												<input
+													type="color"
+													value={rgbToHex(color)}
+													onChange={(e) =>
+														handleTerrainChange(
+															terrain as keyof TerrainTypes,
+															"color",
+															e.target.value
+														)
+													}
+													className="h-8 w-full bg-gray-800 border border-gray-700"
+												/>
+											</div>
+											{/** Divider */}
+											<hr className="border-gray-700" />
 										</div>
-										<div className="grid grid-cols-3 items-center gap-4">
-											<Label className="text-gray-200 col-span-2">Color</Label>
-											<input
-												type="color"
-												value={rgbToHex(color)}
-												onChange={(e) =>
-													handleTerrainChange(
-														terrain as keyof TerrainTypes,
-														"color",
-														e.target.value
-													)
-												}
-												className="h-8 w-full bg-gray-800 border border-gray-700"
-											/>
-										</div>
-										{/** Divider */}
-										<hr className="border-gray-700" />
-									</div>
-								)
-							)}
+									)
+								)}
 						</div>
 					</div>
 				</ModalContent>

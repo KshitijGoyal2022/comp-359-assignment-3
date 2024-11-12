@@ -1,24 +1,23 @@
 "use client";
 import { hexToRgb } from "@/components/ui/algorithm-selection-modal";
 import { Settings, TerrainTypes } from "../components/search-template";
-import Canvas, { PathFindingAlgorithms } from "../components/canvases";
+import { PathFindingAlgorithms } from "../components/canvases";
+const Canvas = dynamic(() => import("../components/canvases"), {
+	ssr: false,
+});
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 
-interface DynamicGridProps {
-	algorithms: string[];
-	settings: Settings;
-}
-
-const DynamicGrid: React.FC<DynamicGridProps> = ({
+const DynamicGrid = ({
 	algorithms,
 	settings,
 }: {
 	algorithms?: PathFindingAlgorithms[];
 	settings: Settings;
 }) => {
-	const columns = Math.ceil(Math.sqrt(algorithms?.length | 0));
-	console.log((((algorithms?.length | 0) % 2) + 1) * 100);
+	const columns = Math.ceil(Math.sqrt(algorithms?.length ?? 0));
+	console.log((((algorithms?.length ?? 0) % 2) + 1) * 100);
 
 	return (
 		<div
@@ -69,17 +68,20 @@ export default function RenderPage() {
 				params.get(`terrainTypes[${terrain}][cost]`) || "1"
 			);
 			const colorHex = params.get(`terrainTypes[${terrain}][color]`) || "red";
-			settings.terrainTypes[terrain as keyof TerrainTypes] = {
-				cost,
-				color: hexToRgb(colorHex),
-			};
+			if (settings.terrainTypes) {
+				settings.terrainTypes[terrain as keyof TerrainTypes] = {
+					cost,
+					color: hexToRgb(colorHex),
+				};
+			}
 		});
-
 		// Parse algorithms array
 		settings.algorithms = [];
 		let index = 0;
 		while (params.has(`algorithms[${index}]`)) {
-			settings.algorithms.push(params.get(`algorithms[${index}]`) || "");
+			settings.algorithms.push(
+				(params.get(`algorithms[${index}]`) || "") as any
+			);
 			index++;
 		}
 
