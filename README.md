@@ -11,7 +11,7 @@
 <img width="1312" alt="Screenshot 2024-09-20 at 4 10 41 PM" src="https://github.com/user-attachments/assets/8aa34ba3-d177-49f6-a80a-d7ec18457a44"> -->
 
 ### Live version
-https://ufv-comp-359-a1.vercel.app/
+https://ufv-comp-359-a3.vercel.app/
 
 ### Members
 
