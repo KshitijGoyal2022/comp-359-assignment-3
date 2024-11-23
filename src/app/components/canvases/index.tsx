@@ -1,7 +1,6 @@
 // SketchComponent.tsx
-
+"use client";
 import React, { useState } from "react";
-import Sketch from "react-p5";
 import AStarSearch from "../search-algorithms/a-star";
 import * as p5Types from "p5";
 import SearchTemplate, { Settings } from "../search-template";
@@ -9,6 +8,11 @@ import UniformCostSearch from "../search-algorithms/uniform-cost-search";
 import DFS from "../search-algorithms/dfs";
 import BFS from "../search-algorithms/bfs";
 import GreedySearch from "../search-algorithms/greedy-search";
+import dynamic from "next/dynamic";
+
+const Sketch = dynamic(() => import("react-p5"), {
+	ssr: false,
+});
 
 export enum PathFindingAlgorithms {
 	AStar = "A*",

@@ -25,7 +25,7 @@ const SelectionPage = ({
 }) => {
 	return (
 		<>
-			<ModalBody>
+			<ModalBody className="overflow-y-auto">
 				<ModalContent>
 					<h4 className="text-lg md:text-2xl text-neutral-100 font-bold text-center mb-8">
 						Select yout algorithms{" "}

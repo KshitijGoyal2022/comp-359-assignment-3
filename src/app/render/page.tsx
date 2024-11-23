@@ -6,7 +6,7 @@ const Canvas = dynamic(() => import("../components/canvases"), {
 	ssr: false,
 });
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 const DynamicGrid = ({
