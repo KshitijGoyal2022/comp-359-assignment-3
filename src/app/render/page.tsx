@@ -17,14 +17,12 @@ const DynamicGrid = ({
 	settings: Settings;
 }) => {
 	return (
-		<div className="grid gap-6 min-h-screen w-full grid-cols-[repeat(auto-fit,minmax(500px,1fr))]">
-			{
-				algorithms?.map((algorithm, index) => (
-					<div key={index} className="flex">
-						<Canvas algorithm={algorithm} settings={settings} />
-					</div>
-				))
-			}
+		<div className="grid gap-6 auto-rows-auto w-full grid-cols-3 overflow-y-auto">
+			{algorithms?.map((algorithm, index) => (
+				<div key={index} className="flex w-full min-h-[500px]">
+					<Canvas algorithm={algorithm} settings={settings} />
+				</div>
+			))}
 		</div>
 	);
 };
@@ -88,20 +86,19 @@ export default function RenderPage() {
 
 	useEffect(() => {
 		const decoded = decodeSettingsFromParams(params);
-		// remove algorithm from settings
 		setSearchInstance(decoded);
 	}, [params]);
 
-	console.log(decodeSettingsFromParams(params));
-
 	return (
-		<div className="bg-black p-10">
-			{searchInstance && (
-				<DynamicGrid
-					algorithms={searchInstance?.algorithms}
-					settings={searchInstance}
-				/>
-			)}
+		<div className="bg-black p-10 h-screen overflow-hidden">
+			<div className="h-full overflow-auto">
+				{searchInstance && (
+					<DynamicGrid
+						algorithms={searchInstance?.algorithms}
+						settings={searchInstance}
+					/>
+				)}
+			</div>
 		</div>
 	);
 }
