@@ -16,11 +16,19 @@ const DynamicGrid = ({
 	algorithms?: PathFindingAlgorithms[];
 	settings: Settings;
 }) => {
-	return (
+
+	const [seed, setSeed] = useState<number>();
+
+	useEffect(() => {
+		setSeed(Math.floor(Math.random() * (10000 - 1 + 1)) + 1)
+	}, [])
+
+
+	return (seed &&
 		<div className="grid gap-6 auto-rows-auto w-full grid-cols-3 overflow-y-auto">
 			{algorithms?.map((algorithm, index) => (
-				<div key={index} className="flex w-full min-h-[500px]">
-					<Canvas algorithm={algorithm} settings={settings} />
+				<div key={index} className="flex w-full min-h-[800px]">
+					<Canvas algorithm={algorithm} settings={settings} seed={seed} />
 				</div>
 			))}
 		</div>
