@@ -1,3 +1,4 @@
+import Grid from "../grid";
 import SearchTemplate, { Settings } from "../search-template";
 import Spot from "../spot";
 import * as p5Types from "p5";
@@ -6,8 +7,8 @@ export default class DFS extends SearchTemplate {
 	private stack!: Spot[];
 	private visited!: Set<Spot>;
 
-	constructor(p5: p5Types, settings: Settings, gridAreaSize: [number, number]) {
-		super(p5, settings, gridAreaSize);
+	constructor(p5: p5Types, settings: Settings, grid: Grid) {
+		super(p5, settings, grid);
 	}
 
 	protected additionalSetup(): void {

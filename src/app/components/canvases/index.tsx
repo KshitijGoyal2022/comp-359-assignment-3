@@ -9,6 +9,7 @@ import DFS from "../search-algorithms/dfs";
 import BFS from "../search-algorithms/bfs";
 import GreedySearch from "../search-algorithms/greedy-search";
 import dynamic from "next/dynamic";
+import Grid from "../grid";
 
 const Sketch = dynamic(() => import("react-p5"), {
 	ssr: false,
@@ -50,16 +51,18 @@ const Canvas: React.FC<Props> = (props) => {
 
 		let searchAlgo: SearchTemplate;
 
+		const grid = new Grid(p5, settings, [width, height]);
+
 		if (algorithm === PathFindingAlgorithms.AStar) {
-			searchAlgo = new AStarSearch(p5, settings, [width, height]);
+			searchAlgo = new AStarSearch(p5, settings, grid);
 		} else if (algorithm === PathFindingAlgorithms.UniformCost) {
-			searchAlgo = new UniformCostSearch(p5, settings, [width, height]);
+			searchAlgo = new UniformCostSearch(p5, settings, grid);
 		} else if (algorithm === PathFindingAlgorithms.DFS) {
-			searchAlgo = new DFS(p5, settings, [width, height]);
+			searchAlgo = new DFS(p5, settings, grid);
 		} else if (algorithm === PathFindingAlgorithms.BFS) {
-			searchAlgo = new BFS(p5, settings, [width, height]);
+			searchAlgo = new BFS(p5, settings, grid);
 		} else {
-			searchAlgo = new GreedySearch(p5, settings, [width, height]);
+			searchAlgo = new GreedySearch(p5, settings, grid);
 		}
 
 		setSearchInstance(searchAlgo);
