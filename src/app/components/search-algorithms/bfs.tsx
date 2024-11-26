@@ -44,6 +44,7 @@ export default class BFS extends SearchTemplate {
 			}
 		} else {
 			console.log("BFS: No solution");
+			this.noSolution = true;
 			this.p5.noLoop();
 			return;
 		}

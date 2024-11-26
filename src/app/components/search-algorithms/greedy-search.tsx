@@ -55,6 +55,7 @@ export default class GreedySearch extends SearchTemplate {
 			}
 		} else {
 			console.log("Greedy Best-First Search: No solution");
+			this.noSolution = true;
 			this.p5.noLoop();
 			return;
 		}

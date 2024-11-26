@@ -77,6 +77,7 @@ export default class AStarSearch extends SearchTemplate {
 			}
 		} else {
 			console.log("A* Search: No solution");
+			this.noSolution = true;
 			this.p5.noLoop();
 			return;
 		}

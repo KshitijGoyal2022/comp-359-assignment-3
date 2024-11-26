@@ -54,6 +54,7 @@ export default class UniformCostSearch extends SearchTemplate {
 			}
 		} else {
 			console.log("Uniform Cost Search: No solution");
+			this.noSolution = true;
 			this.p5.noLoop();
 			return;
 		}

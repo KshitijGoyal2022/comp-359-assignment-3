@@ -6,7 +6,7 @@ const Canvas = dynamic(() => import("../components/canvases"), {
 	ssr: false,
 });
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 const DynamicGrid = ({
@@ -16,20 +16,22 @@ const DynamicGrid = ({
 	algorithms?: PathFindingAlgorithms[];
 	settings: Settings;
 }) => {
-	const columns = Math.ceil(Math.sqrt(algorithms?.length ?? 0));
-	console.log((((algorithms?.length ?? 0) % 2) + 1) * 100);
+	const [seed, setSeed] = useState<number | null>();
+
+	useEffect(() => {
+		setSeed(Math.floor(Math.random() * (100000 - 1 + 1)) + 1);
+	}, []);
 
 	return (
-		<div
-			className="grid gap-4 bg-black h-screen"
-			style={{
-				gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
-			}}
-		>
-			{algorithms?.map((algorithm, index) => (
-				<Canvas key={index} algorithm={algorithm} settings={settings} />
-			))}
-		</div>
+		seed && (
+			<div className="grid gap-6 min-h-screen w-full grid-cols-[repeat(auto-fit,minmax(500px,1fr))] overflow-y-auto">
+				{algorithms?.map((algorithm, index) => (
+					<div key={index} className="flex">
+						<Canvas algorithm={algorithm} settings={settings} seed={seed} />
+					</div>
+				))}
+			</div>
+		)
 	);
 };
 
@@ -80,7 +82,7 @@ export default function RenderPage() {
 		let index = 0;
 		while (params.has(`algorithms[${index}]`)) {
 			settings.algorithms.push(
-				(params.get(`algorithms[${index}]`) || "") as any
+				(params.get(`algorithms[${index}]`) || "") as PathFindingAlgorithms
 			);
 			index++;
 		}
@@ -99,7 +101,10 @@ export default function RenderPage() {
 	console.log(decodeSettingsFromParams(params));
 
 	return (
-		<div>
+		<div
+			className="bg-black p-10"
+			style={{ height: "200vh", overflowY: "scroll" }}
+		>
 			{searchInstance && (
 				<DynamicGrid
 					algorithms={searchInstance?.algorithms}

@@ -41,6 +41,7 @@ export default abstract class SearchTemplate implements SearchInterface {
 	protected terrainTypes: TerrainTypes;
 	protected current: Spot | null;
 	protected finished: boolean;
+	protected noSolution: boolean;
 
 	protected nodesVisited: number;
 	protected totalPathCost: number;
@@ -76,6 +77,7 @@ export default abstract class SearchTemplate implements SearchInterface {
 			mountain: 0,
 		};
 		this.finished = false;
+		this.noSolution = false;
 	}
 
 	protected defaultTerrainTypes(): TerrainTypes {
@@ -346,5 +348,8 @@ export default abstract class SearchTemplate implements SearchInterface {
 	}
 	public hasFinished() {
 		return this.finished;
+	}
+	public hasNoSolution() {
+		return this.noSolution;
 	}
 }
