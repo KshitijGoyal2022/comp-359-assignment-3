@@ -25,7 +25,7 @@ export enum PathFindingAlgorithms {
 type Props = {
 	algorithm: PathFindingAlgorithms;
 	settings?: Settings;
-	seed: number
+	seed: number;
 };
 
 const defaultSettings: Settings = {
@@ -36,8 +36,11 @@ const defaultSettings: Settings = {
 	numDynamicObstacles: 20,
 };
 
-const Canvas: React.FC<Props> = ({ algorithm, settings = defaultSettings, seed }) => {
-
+const Canvas: React.FC<Props> = ({
+	algorithm,
+	settings = defaultSettings,
+	seed,
+}) => {
 	const [searchInstance, setSearchInstance] = useState<SearchTemplate | null>(
 		null
 	);
@@ -47,7 +50,7 @@ const Canvas: React.FC<Props> = ({ algorithm, settings = defaultSettings, seed }
 		const height = settings.rows * 10;
 		// TODO read the settings from the user and size
 		p5.createCanvas(width, height).parent(canvasParentRef);
-		p5.randomSeed(seed)
+		p5.randomSeed(seed);
 
 		let searchAlgo: SearchTemplate;
 
@@ -98,8 +101,13 @@ const Canvas: React.FC<Props> = ({ algorithm, settings = defaultSettings, seed }
 			"total_cost" + algorithm
 		)!.innerHTML = `Total Path cost: ${searchInstance?.getTotalPathCost()}`;
 
-		document.getElementById("status" + algorithm)!.innerHTML = `${searchInstance?.hasFinished() ? "Finished" : "Running"
-			}`;
+		document.getElementById("status" + algorithm)!.innerHTML = `${
+			searchInstance?.hasFinished()
+				? "Finished"
+				: searchInstance?.hasNoSolution()
+				? "No solution"
+				: "Running"
+		}`;
 		document.getElementById("status" + algorithm)!.className =
 			searchInstance?.hasFinished()
 				? "ml-1 text-green-500 font-bold"
@@ -111,8 +119,9 @@ const Canvas: React.FC<Props> = ({ algorithm, settings = defaultSettings, seed }
 		// add p into breakdown
 		for (const terrain in terrainCosts) {
 			const cost = terrainCosts[terrain];
-			breakdown!.innerHTML += `${terrain.charAt(0).toUpperCase() + terrain.slice(1)
-				}: ${cost.toFixed(2)}<br>`;
+			breakdown!.innerHTML += `${
+				terrain.charAt(0).toUpperCase() + terrain.slice(1)
+			}: ${cost.toFixed(2)}<br>`;
 		}
 
 		if (searchInstance?.hasFinished()) p5.noLoop();

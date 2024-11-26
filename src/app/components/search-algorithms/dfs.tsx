@@ -44,6 +44,7 @@ export default class DFS extends SearchTemplate {
 			}
 		} else {
 			console.log("DFS: No solution");
+			this.noSolution = true;
 			this.p5.noLoop();
 			return;
 		}

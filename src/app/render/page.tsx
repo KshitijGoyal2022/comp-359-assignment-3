@@ -16,22 +16,22 @@ const DynamicGrid = ({
 	algorithms?: PathFindingAlgorithms[];
 	settings: Settings;
 }) => {
-	const [seed, setSeed] = useState<number | null>()
+	const [seed, setSeed] = useState<number | null>();
 
 	useEffect(() => {
-		setSeed(Math.floor(Math.random() * (100000 - 1 + 1)) + 1)
-	}, [])
+		setSeed(Math.floor(Math.random() * (100000 - 1 + 1)) + 1);
+	}, []);
 
-	return (seed &&
-		<div className="grid gap-6 min-h-screen w-full grid-cols-[repeat(auto-fit,minmax(500px,1fr))]">
-			{
-				algorithms?.map((algorithm, index) => (
+	return (
+		seed && (
+			<div className="grid gap-6 min-h-screen w-full grid-cols-[repeat(auto-fit,minmax(500px,1fr))] overflow-y-auto">
+				{algorithms?.map((algorithm, index) => (
 					<div key={index} className="flex">
 						<Canvas algorithm={algorithm} settings={settings} seed={seed} />
 					</div>
-				))
-			}
-		</div>
+				))}
+			</div>
+		)
 	);
 };
 
@@ -101,7 +101,10 @@ export default function RenderPage() {
 	console.log(decodeSettingsFromParams(params));
 
 	return (
-		<div className="bg-black p-10">
+		<div
+			className="bg-black p-10"
+			style={{ height: "200vh", overflowY: "scroll" }}
+		>
 			{searchInstance && (
 				<DynamicGrid
 					algorithms={searchInstance?.algorithms}
