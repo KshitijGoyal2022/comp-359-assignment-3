@@ -97,6 +97,8 @@ export default abstract class SearchTemplate implements SearchInterface {
 		this.additionalSetup();
 	}
 
+	public abstract getElapsedTime(): number;
+
 	protected abstract additionalSetup(): void;
 
 	protected createGrid(): void {

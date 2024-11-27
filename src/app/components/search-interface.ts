@@ -5,4 +5,5 @@ export interface SearchInterface {
 	toggleDynamicObstacles(enable: boolean): void;
 	handleMousePressed(x: number, y: number): void;
 	reset(): void;
+	getElapsedTime(): number;
 }

@@ -101,6 +101,12 @@ const Canvas: React.FC<Props> = ({
 			"total_cost" + algorithm
 		)!.innerHTML = `Total Path cost: ${searchInstance?.getTotalPathCost()}`;
 
+		document.getElementById(
+			"duration" + algorithm
+		)!.innerHTML = `Time elapsed: ${searchInstance
+			?.getElapsedTime()
+			.toFixed(2)} s`;
+
 		document.getElementById("status" + algorithm)!.innerHTML = `${
 			searchInstance?.hasFinished()
 				? "Finished"
@@ -146,6 +152,9 @@ const Canvas: React.FC<Props> = ({
 					</p>
 					<p id={"total_cost" + algorithm} className="text-sm">
 						<strong>Total Path cost:</strong> <span className="ml-1">0</span>
+					</p>
+					<p className="text-sm" id={"duration" + algorithm}>
+						<strong>Time elapsed:</strong> <span className="ml-1">0</span>
 					</p>
 					<p className="text-sm">
 						<strong>Status</strong>{" "}

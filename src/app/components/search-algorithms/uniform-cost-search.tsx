@@ -5,9 +5,13 @@ import * as p5Types from "p5";
 export default class UniformCostSearch extends SearchTemplate {
 	private frontier!: Spot[];
 	private explored!: Spot[];
+	private startTime: number | null;
+	private endTime: number | null;
 
 	constructor(p5: p5Types, settings: Settings, gridAreaSize: [number, number]) {
 		super(p5, settings, gridAreaSize);
+		this.startTime = null;
+		this.endTime = null;
 	}
 
 	protected additionalSetup(): void {
@@ -18,9 +22,14 @@ export default class UniformCostSearch extends SearchTemplate {
 			this.frontier.push(this.start);
 		}
 		this.current = null;
+		this.startTime = this.p5.millis();
+		this.endTime = null;
 	}
 
 	public run(): void {
+		if (this.startTime === null) {
+			this.startTime = this.p5.millis();
+		}
 		if (this.finished) return;
 		if (this.frontier.length > 0) {
 			this.frontier.sort((a, b) => a.cost - b.cost);
@@ -31,6 +40,7 @@ export default class UniformCostSearch extends SearchTemplate {
 				this.calculatePathCosts();
 				this.p5.noLoop();
 				this.finished = true;
+				this.endTime = this.p5.millis();
 				console.log("Uniform Cost Search: Path found!");
 			}
 
@@ -56,6 +66,7 @@ export default class UniformCostSearch extends SearchTemplate {
 			console.log("Uniform Cost Search: No solution");
 			this.noSolution = true;
 			this.p5.noLoop();
+			this.endTime = this.p5.millis();
 			return;
 		}
 
@@ -74,5 +85,16 @@ export default class UniformCostSearch extends SearchTemplate {
 		for (const spot of this.frontier) {
 			spot.show(this.p5.color(0, 255, 0, 50));
 		}
+	}
+	public getElapsedTime(): number {
+		if (this.startTime !== null) {
+			const currentTime =
+				this.finished && this.endTime !== null
+					? this.endTime
+					: this.p5.millis();
+			const elapsedTime = (currentTime - this.startTime) / 1000;
+			return elapsedTime;
+		}
+		return -1;
 	}
 }

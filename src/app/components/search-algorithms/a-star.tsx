@@ -7,9 +7,13 @@ import * as p5Types from "p5";
 export default class AStarSearch extends SearchTemplate {
 	private openSet!: Spot[];
 	private closedSet!: Spot[];
+	private startTime: number | null;
+	private endTime: number | null;
 
 	constructor(p5: p5Types, settings: Settings, gridAreaSize: [number, number]) {
 		super(p5, settings, gridAreaSize);
+		this.startTime = null;
+		this.endTime = null;
 	}
 
 	protected additionalSetup(): void {
@@ -19,6 +23,8 @@ export default class AStarSearch extends SearchTemplate {
 			this.openSet.push(this.start);
 		}
 		this.current = null;
+
+		this.endTime = null;
 	}
 
 	private heuristic(a: Spot, b: Spot): number {
@@ -26,6 +32,9 @@ export default class AStarSearch extends SearchTemplate {
 	}
 
 	public run(): void {
+		if (this.startTime === null) {
+			this.startTime = this.p5.millis();
+		}
 		if (this.finished) return;
 		if (this.openSet.length > 0) {
 			let winner = 0;
@@ -42,6 +51,7 @@ export default class AStarSearch extends SearchTemplate {
 				this.calculatePathCosts();
 				this.p5.noLoop();
 				this.finished = true;
+				this.endTime = this.p5.millis();
 				console.log("A* Search: Path found!");
 			}
 
@@ -79,6 +89,7 @@ export default class AStarSearch extends SearchTemplate {
 			console.log("A* Search: No solution");
 			this.noSolution = true;
 			this.p5.noLoop();
+			this.endTime = this.p5.millis();
 			return;
 		}
 
@@ -97,5 +108,17 @@ export default class AStarSearch extends SearchTemplate {
 		for (const spot of this.openSet) {
 			spot.show(this.p5.color(0, 255, 0, 50));
 		}
+	}
+
+	public getElapsedTime(): number {
+		if (this.startTime !== null) {
+			const currentTime =
+				this.finished && this.endTime !== null
+					? this.endTime
+					: this.p5.millis();
+			const elapsedTime = (currentTime - this.startTime) / 1000;
+			return elapsedTime;
+		}
+		return -1;
 	}
 }

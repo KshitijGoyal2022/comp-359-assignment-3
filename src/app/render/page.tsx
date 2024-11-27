@@ -24,7 +24,14 @@ const DynamicGrid = ({
 
 	return (
 		seed && (
-			<div className="grid gap-6 min-h-screen w-full grid-cols-[repeat(auto-fit,minmax(500px,1fr))] overflow-y-auto">
+			<div
+				className="grid gap-6 w-full grid-cols-[repeat(auto-fit,minmax(500px,1fr))]"
+				style={{
+					maxHeight: "calc(100vh - 80px)", // Adjusted for header height
+					overflowY: "auto",
+					paddingBottom: "20px",
+				}}
+			>
 				{algorithms?.map((algorithm, index) => (
 					<div key={index} className="flex">
 						<Canvas algorithm={algorithm} settings={settings} seed={seed} />
@@ -64,7 +71,6 @@ export default function RenderPage() {
 			algorithms: [],
 		};
 
-		// Parse terrain types (cost and color)
 		["plain", "forest", "water", "mountain"].forEach((terrain) => {
 			const cost = parseInt(
 				params.get(`terrainTypes[${terrain}][cost]`) || "1"
@@ -77,7 +83,7 @@ export default function RenderPage() {
 				};
 			}
 		});
-		// Parse algorithms array
+
 		settings.algorithms = [];
 		let index = 0;
 		while (params.has(`algorithms[${index}]`)) {
@@ -94,23 +100,42 @@ export default function RenderPage() {
 
 	useEffect(() => {
 		const decoded = decodeSettingsFromParams(params);
-		// remove algorithm from settings
 		setSearchInstance(decoded);
 	}, [params]);
 
-	console.log(decodeSettingsFromParams(params));
-
 	return (
-		<div
-			className="bg-black p-10"
-			style={{ height: "200vh", overflowY: "scroll" }}
-		>
-			{searchInstance && (
-				<DynamicGrid
-					algorithms={searchInstance?.algorithms}
-					settings={searchInstance}
-				/>
-			)}
+		<div className="bg-black min-h-screen">
+			{/* Header */}
+			<header
+				className="flex items-center justify-between px-4 py-3 bg-gray-800 text-white fixed top-0 left-0 right-0 z-10"
+				style={{ height: "60px" }}
+			>
+				<button
+					className="text-white bg-gray-700 px-3 py-1 rounded hover:bg-gray-600"
+					onClick={() => window.history.back()}
+				>
+					Back
+				</button>
+				<h1 className="text-xl font-semibold">Find the path!</h1>
+				<div></div> {/* Placeholder for alignment */}
+			</header>
+
+			{/* Content */}
+			<div
+				className="p-10"
+				style={{
+					marginTop: "60px", // Prevent overlap with the header
+					height: "calc(100vh - 60px)", // Adjust for header height
+					overflowY: "auto",
+				}}
+			>
+				{searchInstance && (
+					<DynamicGrid
+						algorithms={searchInstance?.algorithms}
+						settings={searchInstance}
+					/>
+				)}
+			</div>
 		</div>
 	);
 }
