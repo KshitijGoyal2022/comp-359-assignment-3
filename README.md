@@ -98,7 +98,7 @@ The goal is to help users understand the inner workings of these algorithms thro
 
 1. **GitHub for Version Control and Task Assignment:**  
    - Codebase versioning and branching.  
-   - Task assignment via [GitHub Project Board](https://github.com/users/shardaishwak/projects/1/views/4).  
+   - Task assignment via [GitHub Project Board](https://github.com/users/KshitijGoyal2022/projects/2).  
 
 2. **ReadMe Documentation:**  
    - Tasks divided among team members and logged here for transparency.  
@@ -112,29 +112,8 @@ The goal is to help users understand the inner workings of these algorithms thro
 
 2. **Algorithm Analysis Document:**  
    - Comprehensive analysis of algorithms.  
-   - [PDF Version](https://github.com/user-attachments/files/17082556/Algorithm.Analysis.pdf)  
-   - [Overleaf Version](https://www.overleaf.com/read/vtgpnmbfdwkz#8948b5)  
-
----
-
-## Rubric
-
-Total: **10 Marks** (individual grading for each team member)
-
-1. **[1 Mark] Plan and Logging of Work**  
-   - Git commits, logs, and task board usage.
-
-2. **[2 Marks] References/Citations**  
-   - Proper documentation of sources and inspirations, included in the README or the presentation.
-
-3. **[1 Mark] Algorithm Analysis**  
-   - Analysis of algorithms based on time/space complexity and practical considerations.
-
-4. **[4 Marks] Implementation or Experimentation**  
-   - Implementation of search algorithms or conducting statistical experiments.
-
-5. **[2 Marks] Debugging and Testing**  
-   - Ensuring correctness of algorithms and animations through debugging and validation.  
+   - [PDF Version](TBD)  
+   - [Overleaf Version](TBD)  
 
 ---
 
@@ -164,7 +143,3 @@ Total: **10 Marks** (individual grading for each team member)
 
 - Adjustments were made to improve clarity, fix errors, and align the README with the actual project.  
 - For further details, visit the [live version](https://ufv-comp-359-a3.vercel.app/).
-
---- 
-
-This revised README ensures consistency, accuracy, and readability while reflecting your project’s goals and features. Let me know if you need any further tweaks!
