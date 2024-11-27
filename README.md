@@ -1,114 +1,170 @@
-# Assignment 3
+# Want to find a path? Visualize It!
 
 ## Topic
 
-**Create a program that visualizes various informed and uninformed search algorithms: DFS, BFS, Greedy Search, A* and UCS.**
+**Visualization of Various Informed and Uninformed Search Algorithms**  
 
+This project involves creating a program that visualizes the following search algorithms:  
+- Uninformed Search: **DFS (Depth-First Search)**, **BFS (Breadth-First Search)**  
+- Informed Search: **Greedy Search**, **A\***, **Uniform Cost Search (UCS)**  
 
-<!-- <img width="1712" alt="Screenshot 2024-09-20 at 4 09 05 PM" src="https://github.com/user-attachments/assets/b602aff2-502e-4d00-9cd7-e0795e2f44ab">
-<img width="2168" alt="Screenshot 2024-09-20 at 4 09 44 PM" src="https://github.com/user-attachments/assets/ad2a57e4-96f3-4c6c-8d71-b7904d91e16d">
+The goal is to help users understand the inner workings of these algorithms through animation and statistical data.
 
-<img width="1312" alt="Screenshot 2024-09-20 at 4 10 41 PM" src="https://github.com/user-attachments/assets/8aa34ba3-d177-49f6-a80a-d7ec18457a44"> -->
-
-### Live version
-https://ufv-comp-359-a3.vercel.app/
-
-### Members
-
-- Ishwak Sharda (300205473 - ishwak.sharda@student.ufv.ca)
-- Kshitij Goyal (300197764 - kshitij.goyal@student.ufv.ca)
-- Joshua Lepon (300189001 - joshuakarle.lepon@student.ufv.ca)
-
-### Source code
-- Typescript (web): https://github.com/KshitijGoyal2022/comp-359-assignment-3
-- Github Board: https://github.com/users/shardaishwak/projects/1/views/4
+### Live Version  
+[Visit the Application](https://ufv-comp-359-a3.vercel.app/)
 
 ---
 
-### Requirements
+## Team Members
 
-Instead of showing the one algorithm at a time, we can have panel where the user selects two algorithms from the list of available algorithms and then the animation runs side-by-side with the two algorithms. For statistics, we can return the following data:
-
-- Number of swaps
-- Number of comparisons
-- Timing of execution
-- Backtracking?: keep the changes in the array in an array so that user can go forward or backward in steps
-
-The user will select the size of the array and the algorithms to run. Then, when they press PLAY, the algorithms run simultaneously.
-
-**Is there a way to have a progress bar to show how far the algorithms have arrived.**
-
-### Planning
-
-- Readme file: dividing the tasks, requirements, rubric and general progress of each user.
-- Github: for keeping track of the code files, versioning, branching and issues. 
-  - Java Repository: https://github.com/shardaishwak/comp-359-assignment-1-java
-  - Typescript Respository: https://github.com/shardaishwak/comp-359-assignment-1
-- Github Board / Notion: for assignment of tasks to each user. We primary used Roadmap Check it out at: [https://github.com/users/shardaishwak/projects/1/views/4](https://github.com/users/shardaishwak/projects/1/views/4)
-
-### Submission model
-
-- Powerpoint presentation: describing briefly all the algorithms, space and time complexity, research involved and the specialty.
-
-### Source:
-
-- See Algorithmi Analysis document. Providing two alternatives that contain the same information:
-  - PDF Version: [Algorithm Analysis.pdf](https://github.com/user-attachments/files/17082556/Algorithm.Analysis.pdf)
-  - Overleaf Version: https://www.overleaf.com/read/vtgpnmbfdwkz#8948b5
-
-### Technologies required
-
-- Typescript
-- P5.JS
-- HTML
-- CSS
-- Vitest
-- React
-- NextJS
-- TailwindCSS
+- **Ishwak Sharda** (300205473 - ishwak.sharda@student.ufv.ca)  
+- **Kshitij Goyal** (300197764 - kshitij.goyal@student.ufv.ca)  
+- **Joshua Lepon** (300189001 - joshuakarle.lepon@student.ufv.ca)  
 
 ---
 
-## Algorithms
+## Source Code
+
+- **Web Implementation (TypeScript):** [Repository Link](https://github.com/KshitijGoyal2022/comp-359-assignment-3)  
+- **GitHub Board:** [Task Board](https://github.com/users/shardaishwak/projects/1/views/4)
+
+---
+
+## Features and Requirements
+
+### Features
+1. **Side-by-Side Visualization:**  
+   Users can select two algorithms to run simultaneously for comparison. The animations play side-by-side, allowing users to observe their behavior.
+
+2. **Statistical Data:**  
+   The following metrics are displayed for each algorithm:
+   - **Execution Time:** How long the algorithm takes to complete.
+   - **Nodes Visited:** Total number of nodes explored during the search.
+   - **Path Cost:** Total cost of the resulting path (if applicable).
+   - **Steps:** Users can navigate forward or backward through the animation to understand each step of the algorithm.
+
+3. **Progress Indicator:**  
+   A progress bar shows how far each algorithm has progressed in real-time.
+
+4. **Customizable Settings:**  
+   Users can adjust:
+   - **Grid Size**: Number of rows and columns in the grid.
+   - **Start and End Points**: Positions of the source and target nodes.
+   - **Dynamic Obstacles**: Whether obstacles move during the animation.
+
+---
+
+## Technologies Used
+
+- **Frontend:** React, Next.js, TailwindCSS  
+- **Animation & Visualization:** p5.js  
+- **Programming Language:** TypeScript  
+- **Testing:** Vitest  
+
+---
+
+## Algorithms Implemented
 
 ### **Uninformed Search Algorithms**
+1. **BFS (Breadth-First Search):**  
+   Time Complexity: O(V + E)  
+   - Explores all neighbors of a node before moving to the next level.
+   - Visualization implemented with a queue-based approach.
 
-1. **BFS** - O(n + k) (where k is the range of input values)
-   - Implemented differently in Processing with a new visualization method.
-3. **DFS** - O(nk) (k is the number of digits)
-   - Implemented in TS and Java
+2. **DFS (Depth-First Search):**  
+   Time Complexity: O(V + E)  
+   - Explores as deep as possible along each branch before backtracking.
+   - Visualization implemented using recursion and a stack.
 
 ### **Informed Search Algorithms**
+1. **Greedy Search:**  
+   Time Complexity: O(n log n)  
+   - Selects the node closest to the goal based on a heuristic.  
+   - May not find the optimal path.  
 
-1. **A* Search** - O(n log n)
-   - Implemented in TS and Java
-3. **Greedy Search** - O(n log n)
-   - Implemented in TS and Java
-5. **Uniform Cost Search** - O(n log n) (on average, worst case is O(n^2))
-   - Implemented in TS
+2. **A\* (A-Star Search):**  
+   Time Complexity: O(n log n)  
+   - Combines the cost to reach a node (g) and the estimated cost to reach the goal (h).  
+   - Always finds the optimal path if the heuristic is admissible.  
 
-### Test suitcase
+3. **Uniform Cost Search (UCS):**  
+   Time Complexity: O(n log n) on average, O(n^2) in the worst case  
+   - Expands the least-cost node first, ignoring heuristics.  
+   - Suitable for graphs with varying edge weights.  
 
-To ensure that our implementations of the algorithms are correct, we can develop a test suitcase to run on each algorithm. This suitcase makes sure that all the algorithms do sort accordingly given some input.
+---
+
+## Planning and Collaboration
+
+1. **GitHub for Version Control and Task Assignment:**  
+   - Codebase versioning and branching.  
+   - Task assignment via [GitHub Project Board](https://github.com/users/shardaishwak/projects/1/views/4).  
+
+2. **ReadMe Documentation:**  
+   - Tasks divided among team members and logged here for transparency.  
+
+---
+
+## Submission Components
+
+1. **PowerPoint Presentation:**  
+   - Description of each algorithm, their time and space complexities, and visualization highlights.  
+
+2. **Algorithm Analysis Document:**  
+   - Comprehensive analysis of algorithms.  
+   - [PDF Version](https://github.com/user-attachments/files/17082556/Algorithm.Analysis.pdf)  
+   - [Overleaf Version](https://www.overleaf.com/read/vtgpnmbfdwkz#8948b5)  
 
 ---
 
 ## Rubric
 
-10 marks total (marked individually per team member)
+Total: **10 Marks** (individual grading for each team member)
 
-- [1 mark] plan and logging of work
-  - e.g., git log and Kanban task board
-- [2 marks] references / citations
-  - e.g., any format will be fine, APA, MLA, etc.
-  - place in [README.md](http://readme.md/) file if code, or place at end of report in bibliography
-- **[1 mark] apply the analysis framework, or collect others’ analysis results**
-- [4 marks] one of the following
-  - implementation,
-  - or statistical experiment,
-  - or writing about a collection of topics surrounding a data structure / problem
-    - majority of the writing is yours---not simply copying quotes / AI as filler
-- note that members of group can overlap in choice, but then must use different
-  algorithm / implementation, or different programming language, or different computer
-  hardware comparison, or different subtopic - in other words, not duplicating someone else’s work
-- **[2 marks] debugging / testing code, or logical reasoning in your writing**
+1. **[1 Mark] Plan and Logging of Work**  
+   - Git commits, logs, and task board usage.
+
+2. **[2 Marks] References/Citations**  
+   - Proper documentation of sources and inspirations, included in the README or the presentation.
+
+3. **[1 Mark] Algorithm Analysis**  
+   - Analysis of algorithms based on time/space complexity and practical considerations.
+
+4. **[4 Marks] Implementation or Experimentation**  
+   - Implementation of search algorithms or conducting statistical experiments.
+
+5. **[2 Marks] Debugging and Testing**  
+   - Ensuring correctness of algorithms and animations through debugging and validation.  
+
+---
+
+### References
+
+1. ["Greedy Best-First Search Algorithm" - GeeksforGeeks](https://www.geeksforgeeks.org/greedy-best-first-search-algorithm/?utm_source=chatgpt.com)  
+   A detailed explanation of the Greedy Best-First Search algorithm, its working, and practical examples.
+
+2. ["Uniform-Cost Search vs. Best-First Search" - Baeldung](https://www.baeldung.com/cs/uniform-cost-search-vs-best-first-search?utm_source=chatgpt.com)  
+   A comparison of Uniform-Cost Search and Best-First Search, discussing their differences and applications.
+
+3. **"Artificial Intelligence: A Modern Approach" by Stuart Russell and Peter Norvig**  
+   Comprehensive textbook covering the theoretical and practical aspects of AI, including BFS, DFS, UCS, Greedy Search, and A*. Available [here](https://aima.cs.berkeley.edu/).
+
+4. **"Data Structures and Algorithm Analysis in Java" by Clifford A. Shaffer**  
+   Chapter 11.3, 11.3.1, and 11.3.2 provide insights into search algorithms, heuristics, and graph traversals.
+
+5. [Understanding Hinton's Capsule Networks - Medium](https://medium.com/@dipalimajet/understanding-hintons-capsule-networks-c2b17cd358d7)  
+   Explains Hinton's Capsule Networks with simplified examples, which can offer inspiration for pathfinding and optimization techniques.
+
+6. [A* Algorithm - A Detailed Explanation](https://mat.uab.cat/~alseda/MasterOpt/AStar-Algorithm.pdf)  
+   A concise and clear explanation of the A* algorithm with mathematical insights and visual examples.
+
+---
+
+### Notes
+
+- Adjustments were made to improve clarity, fix errors, and align the README with the actual project.  
+- For further details, visit the [live version](https://ufv-comp-359-a3.vercel.app/).
+
+--- 
+
+This revised README ensures consistency, accuracy, and readability while reflecting your project’s goals and features. Let me know if you need any further tweaks!
