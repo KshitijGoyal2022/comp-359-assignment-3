@@ -230,6 +230,9 @@ Each team member contribution can be seen in the closed issues section or Github
 6. [A* Algorithm - A Detailed Explanation](https://mat.uab.cat/~alseda/MasterOpt/AStar-Algorithm.pdf)  
    A concise and clear explanation of the A* algorithm with mathematical insights and visual examples.
 
+7. https://chatgpt.com/share/674a464b-06c8-800c-99f7-26adaabc9824
+   Issues with the Grid where the scroll part would be broken when several algorithms are selected, causing the content to not show up.
+
 ---
 
 ### Notes
