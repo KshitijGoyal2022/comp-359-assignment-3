@@ -105,18 +105,6 @@ The goal is to help users understand the inner workings of these algorithms thro
 
 ---
 
-## Submission Components
-
-1. **PowerPoint Presentation:**  
-   - Description of each algorithm, their time and space complexities, and visualization highlights.  
-
-2. **Algorithm Analysis Document:**  
-   - Comprehensive analysis of algorithms.  
-   - [PDF Version](TBD)  
-   - [Overleaf Version](TBD)  
-
----
-
 ### References
 
 1. ["Greedy Best-First Search Algorithm" - GeeksforGeeks](https://www.geeksforgeeks.org/greedy-best-first-search-algorithm/?utm_source=chatgpt.com)  
