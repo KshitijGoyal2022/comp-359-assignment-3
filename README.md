@@ -68,32 +68,135 @@ Each team member contribution can be seen in the closed issues section or Github
 ## Algorithms Implemented
 
 ### **Uninformed Search Algorithms**
+
 1. **BFS (Breadth-First Search):**  
    Time Complexity: O(V + E)  
    - Explores all neighbors of a node before moving to the next level.
    - Visualization implemented with a queue-based approach.
+
+   **Pseudocode:**
+   ```plaintext
+   BFS(graph, start_node):
+       create a queue Q
+       mark start_node as visited
+       enqueue start_node into Q
+
+       while Q is not empty:
+           current_node = dequeue Q
+           for each neighbor in graph.neighbors(current_node):
+               if neighbor is not visited:
+                   mark neighbor as visited
+                   enqueue neighbor into Q
+   ```
 
 2. **DFS (Depth-First Search):**  
    Time Complexity: O(V + E)  
    - Explores as deep as possible along each branch before backtracking.
    - Visualization implemented using recursion and a stack.
 
+   **Pseudocode (Recursive):**
+   ```plaintext
+   DFS(graph, node, visited):
+       mark node as visited
+       for each neighbor in graph.neighbors(node):
+           if neighbor is not visited:
+               DFS(graph, neighbor, visited)
+   ```
+
+   **Pseudocode (Iterative):**
+   ```plaintext
+   DFS(graph, start_node):
+       create a stack S
+       push start_node onto S
+       while S is not empty:
+           current_node = pop S
+           if current_node is not visited:
+               mark current_node as visited
+               for each neighbor in graph.neighbors(current_node):
+                   if neighbor is not visited:
+                       push neighbor onto S
+   ```
+
 ### **Informed Search Algorithms**
+
 1. **Greedy Search:**  
    Time Complexity: O(n log n)  
    - Selects the node closest to the goal based on a heuristic.  
    - May not find the optimal path.  
+
+   **Pseudocode:**
+   ```plaintext
+   GreedySearch(graph, start_node, goal_node, heuristic):
+       create an empty set visited
+       create a priority queue Q
+       enqueue start_node into Q with priority heuristic(start_node)
+
+       while Q is not empty:
+           current_node = dequeue Q
+           if current_node is goal_node:
+               return path from start_node to goal_node
+           mark current_node as visited
+           for each neighbor in graph.neighbors(current_node):
+               if neighbor is not visited:
+                   enqueue neighbor into Q with priority heuristic(neighbor)
+   ```
 
 2. **A\* (A-Star Search):**  
    Time Complexity: O(n log n)  
    - Combines the cost to reach a node (g) and the estimated cost to reach the goal (h).  
    - Always finds the optimal path if the heuristic is admissible.  
 
+   **Pseudocode:**
+   ```plaintext
+   AStarSearch(graph, start_node, goal_node, heuristic):
+       create an empty set closed_set
+       create a priority queue open_set
+       g_score = map with default value infinity
+       g_score[start_node] = 0
+       enqueue start_node into open_set with priority g_score[start_node] + heuristic(start_node)
+       came_from = empty map
+
+       while open_set is not empty:
+           current_node = dequeue open_set
+           if current_node is goal_node:
+               return reconstruct_path(came_from, current_node)
+           add current_node to closed_set
+           for each neighbor in graph.neighbors(current_node):
+               if neighbor in closed_set:
+                   continue
+               tentative_g_score = g_score[current_node] + cost(current_node, neighbor)
+               if tentative_g_score < g_score[neighbor]:
+                   came_from[neighbor] = current_node
+                   g_score[neighbor] = tentative_g_score
+                   f_score = g_score[neighbor] + heuristic(neighbor)
+                   enqueue neighbor into open_set with priority f_score
+   ```
+
 3. **Uniform Cost Search (UCS):**  
-   Time Complexity: O(n log n) on average, O(n^2) in the worst case  
+   Time Complexity: O(n log n) on average, O(n²) in the worst case  
    - Expands the least-cost node first, ignoring heuristics.  
    - Suitable for graphs with varying edge weights.  
 
+   **Pseudocode:**
+   ```plaintext
+   UniformCostSearch(graph, start_node, goal_node):
+       create a priority queue Q
+       enqueue start_node into Q with priority 0
+       cost_so_far = map with default value infinity
+       cost_so_far[start_node] = 0
+       came_from = empty map
+
+       while Q is not empty:
+           current_node = dequeue Q
+           if current_node is goal_node:
+               return reconstruct_path(came_from, current_node)
+           for each neighbor in graph.neighbors(current_node):
+               new_cost = cost_so_far[current_node] + cost(current_node, neighbor)
+               if new_cost < cost_so_far[neighbor]:
+                   cost_so_far[neighbor] = new_cost
+                   enqueue neighbor into Q with priority new_cost
+                   came_from[neighbor] = current_node
+   ```
 ---
 
 ## Planning and Collaboration
