@@ -26,7 +26,7 @@ The goal is to help users understand the inner workings of these algorithms thro
 ## Source Code
 
 - **Web Implementation (TypeScript):** [Repository Link](https://github.com/KshitijGoyal2022/comp-359-assignment-3)  
-- **GitHub Board:** [Task Board](https://github.com/users/shardaishwak/projects/1/views/4)
+- **GitHub Board:** [Task Board](https://github.com/users/KshitijGoyal2022/projects/2)
 
 ---
 
