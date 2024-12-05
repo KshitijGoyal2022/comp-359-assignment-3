@@ -9,9 +9,8 @@ This project involves creating a program that visualizes the following search al
 - Informed Search: **Greedy Search**, **A\***, **Uniform Cost Search (UCS)**  
 
 The goal is to help users understand the inner workings of these algorithms through animation and statistical data.
-
 ### Live Version  
-[Visit the Application](https://ufv-comp-359-a3.vercel.app/)
+[Visit the Application](https://comp-359-assignment-3.vercel.app/)
 
 ---
 
